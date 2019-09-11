@@ -1,0 +1,23 @@
+{
+  "name": "DangerNoodle",
+  "version": "1.0.0",
+  "description": "Classic game of Snake in the command line",
+  "main": "dangernoodle.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrypticWoodWhite/DangerNoodle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrypticWoodWhite/DangerNoodle/issues"
+  },
+  "homepage": "https://github.com/CrypticWoodWhite/DangerNoodle#readme",
+  "dependencies": {
+    "blessed": "^0.1.81"
+  }
+}
