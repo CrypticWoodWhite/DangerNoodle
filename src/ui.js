@@ -8,7 +8,7 @@ const UI = function() {
     this.gameContainer = this.blessed.box(this.gameBox);
     this.scoreContainer = this.blessed.box(this.scoreBox);
 
-    this.gameBox = () => {
+    this.gameBox = function() {
         return {
             parent: this.screen,
             top: 1,
@@ -21,7 +21,7 @@ const UI = function() {
             }
         }
     };
-    this.scoreBox = () => {
+    this.scoreBox = function() {
         return {
             parent: this.screen,
             top: 0,
@@ -35,7 +35,7 @@ const UI = function() {
             }
         }
     };
-    this.gameOverBox = () => {
+    this.gameOverBox = function() {
         return {
             parent: this.screen,
             top: "center",
@@ -58,7 +58,7 @@ const UI = function() {
         }
     };
 
-    this.draw = (coord, color) => {
+    this.draw = function(coord, color) {
         this.blessed.box({
             parent: this.gameContainer,
             top: coord.y,
@@ -72,34 +72,34 @@ const UI = function() {
         })
     };
 
-    this.updateScore = score => {
+    this.updateScore = function(score) {
         this.scoreContainer.setLine(0, `{bold}Score:{/bold} ${score}`);
     };
     
-    this.gameOverScreen = () => {
+    this.gameOverScreen = function() {
         this.gameContainer = this.blessed.box(this.gameOverBox);
     };
     
-    this.clearScreen = () => {
+    this.clearScreen = function() {
         this.gameContainer.detach();
         this.gameContainer = this.blessed.box(this.gameBox);
     };
     
-    this.resetScore = () => {
+    this.resetScore = function() {
         this.scoreContainer.detach();
         this.scoreContainer = this.blessed.box(this.scoreBox);
         this.updateScore(0);
     };
     
-    this.render = () => {
-        this.screen.render()
+    this.render = function() {
+        this.screen.render();
     };
 
-    this.bindHandlers = (keyPressHandler, quitHandler, enterHandler) => {
+    this.bindHandlers = function(keyPressHandler, quitHandler, enterHandler) {
         this.screen.on("keypress", keyPressHandler)
         this.screen.key(["escape", "q", "C-c"], quitHandler)
         this.screen.key(["enter"], enterHandler)
-      }
+    };
 };
 
 module.exports = UI;
