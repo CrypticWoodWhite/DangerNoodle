@@ -155,8 +155,8 @@ const UI = function() {
         this.screen.render();
     };
 
-    this.bindHandlers = (keypressHandler, playHandler, exitHandler) => {
-        this.screen.on("keypress", keypressHandler);
+    this.bindHandlers = (turnHandler, playHandler, exitHandler) => {
+        this.screen.key(["up", "down", "left", "right"], turnHandler);
         this.screen.key(["enter"], playHandler);
         this.screen.key(["escape", "q", "C-c"], exitHandler);      
     };

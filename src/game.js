@@ -174,7 +174,7 @@ const Game = function(ui) {
             this.timer = null;
             return;
         }
-        this.changingDirection = false;
+        this.turning = false;
         this.ui.clearScreen();
         this.drawDot();
         this.slither();
