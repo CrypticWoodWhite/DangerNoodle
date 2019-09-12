@@ -1,6 +1,6 @@
 // game constants
 const CONSTANTS = {
-    speed: 50,
+    speed: 100,
     directions: {
         up: {
             x: 0,
@@ -20,8 +20,8 @@ const CONSTANTS = {
         },
     },
     init_noodle_size: 5,
-    noodle_color: "blue",
-    dot_color: "yellow"
+    noodle_color: "green",
+    dot_color: "red"
 }
 
 // game constructor takes in user interface constructor
@@ -36,7 +36,7 @@ const Game = function(ui) {
     this.timer = null;
 
     // initialize game
-    this.init = function() {
+    this.init = () => {
         this.noodle = [];
         for (let i = CONSTANTS.init_noodle_size; i >= 0; i--) {
             this.noodle[CONSTANTS.init_noodle_size - i] = {
@@ -55,14 +55,20 @@ const Game = function(ui) {
         // these two methods come from UI module
         this.ui.resetScore();
         this.ui.render();
+
+        this.ui.bindHandlers(
+            this.changeDirection,
+            this.play.bind(this),
+            this.exit.bind(this)
+        );
     };
     
     // Get a random coordinate from 0 to max container height/width
-    this.randomPixel = function(max, min) {
+    this.randomPixel = (max, min) => {
         return Math.round(Math.random() * (max - min) + min);
     };
 
-    this.randomDot = function() {
+    this.randomDot = () => {
         this.dot.x = this.randomPixel(0, this.ui.gameContainer.width - 1);
         this.dot.y = this.randomPixel(1, this.ui.gameContainer.height - 1);
     
@@ -74,37 +80,35 @@ const Game = function(ui) {
         });
     };
 
-    this.drawNoodle = function() {
+    this.drawNoodle = () => {
         this.noodle.forEach(segment => {
             // draw method comes from UI module
             this.ui.draw(segment, CONSTANTS.noodle_color);
         });
     };
 
-    this.drawDot = function() {
+    this.drawDot = () => {
         this.ui.draw(this.dot, CONSTANTS.dot_color);
     };
 
-    this.changeDirection = function(key) {
-        if ((key.name === "up") && this.currentDirection !== 'down') {
+    this.changeDirection = (_, key) => {
+        console.log("CHANGE DIRECTION");
+        console.log(key);
+        console.log("=======================");
+        // prevent 180deg direction change
+        if ((key.name === "ArrowUp") && this.currentDirection !== "down") {
             this.currentDirection = "up";
-            this.changingDirection = true;
-        } else if ((key.name === "down") && this.currentDirection !== "up") {
+        } else if ((key.name === "ArrowDown") && this.currentDirection !== "up") {
             this.currentDirection = "down";
-            this.changingDirection = true;
-        } else if ((key.name === "left") && this.currentDirection !== "right") {
+        } else if ((key.name === "ArrowLeft") && this.currentDirection !== "right") {
             this.currentDirection = "left";
-            this.changingDirection = true;
-        } else if ((key.name === "right") && this.currentDirection !== 'left') {
+        } else if ((key.name === "ArrowRight") && this.currentDirection !== "left") {
             this.currentDirection = "right";
-            this.changingDirection = true;
-        } else {
-            this.changingDirection = false;
         }
     };
 
     // move snake
-    this.slither = function() {
+    this.slither = () => {
         if (this.changingDirection) {
             return;
         } else {
@@ -130,7 +134,7 @@ const Game = function(ui) {
     };
 
     // end game if runs into itself or edges of screen
-    this.isGameOver = function() {
+    this.isGameOver = () => {
     // If the snake collides with itself, end the game
         const collide = this.noodle
             .filter((_, i) => i > 0)
@@ -149,12 +153,12 @@ const Game = function(ui) {
         )
     };
 
-    this.showGameOverScreen = function() {
+    this.showGameOverScreen = () => {
         this.ui.gameOverScreen();
         this.ui.render();
     };
 
-    this.tick = function() {
+    this.tick = () => {
         if (this.isGameOver()) {
             this.showGameOverScreen();
             clearInterval(this.timer);
@@ -170,24 +174,19 @@ const Game = function(ui) {
         }
     }
 
-    this.play = function() {
+    this.play = (_, key) => {
         if (!this.timer) {
             this.init();
             this.timer = setInterval(this.tick.bind(this), CONSTANTS.speed)
-        } else {
-            console.log("We're already playing what's going on?");
         }
     };
 
-    this.exit = function() {
-        process.exit(0);
-    };    
-
-    this.ui.bindHandlers(
-        this.changeDirection.bind(this),
-        this.play.bind(this),
-        this.exit.bind(this)
-    );
+    this.exit = (_, key) => {
+        console.log("EXIT");
+        console.log(key);
+        console.log("============================");
+        return process.exit(0);
+    };
 
 
 };
