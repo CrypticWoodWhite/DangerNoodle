@@ -1,6 +1,7 @@
 // game constants
-const SPEED = 50,
-    DIRECTIONS = {
+const CONSTANTS = {
+    SPEED: 50,
+    DIRECTIONS: {
         up: {
             x: 0,
             y: -1
@@ -18,10 +19,10 @@ const SPEED = 50,
             y: 0
         },
     },
-    INIT_NOODLE_SIZE = 5,
-    NOODLE_COLOR = "blue",
-    DOT_COLOR = "yellow";
-
+    INIT_NOODLE_SIZE: 5,
+    NOODLE_COLOR: "blue",
+    DOT_COLOR: "yellow"
+}
 
 // game constructor takes in user interface constructor
 const Game = function(ui) {
@@ -37,8 +38,8 @@ const Game = function(ui) {
     // initialize game
     this.init = function() {
         this.noodle = [];
-        for (let i = INIT_NOODLE_SIZE; i >= 0; i--) {
-            this.noodle[INIT_NOODLE_SIZE - i] = {
+        for (let i = CONSTANTS.INIT_NOODLE_SIZE; i >= 0; i--) {
+            this.noodle[CONSTANTS.INIT_NOODLE_SIZE - i] = {
                 x: i,
                 y: 0
             }
@@ -76,12 +77,12 @@ const Game = function(ui) {
     this.drawNoodle = function() {
         this.noodle.forEach(segment => {
             // draw method comes from UI module
-            this.ui.draw(segment, NOODLE_COLOR);
+            this.ui.draw(segment, CONSTANTS.NOODLE_COLOR);
         });
     };
 
     this.drawDot = function() {
-        this.ui.draw(this.dot, DOT_COLOR);
+        this.ui.draw(this.dot, CONSTANTS.DOT_COLOR);
     };
 
     this.changeDirection = function(key) {
@@ -111,8 +112,8 @@ const Game = function(ui) {
         }
         // Move the head forward by one pixel based on velocity
         const head = {
-            x: this.noodle[0].x + DIRECTIONS[this.currentDirection].x,
-            y: this.noodle[0].y + DIRECTIONS[this.currentDirection].y,
+            x: this.noodle[0].x + CONSTANTS.DIRECTIONS[this.currentDirection].x,
+            y: this.noodle[0].y + CONSTANTS.DIRECTIONS[this.currentDirection].y,
         }
     
         this.snake.unshift(head);
@@ -132,9 +133,7 @@ const Game = function(ui) {
     this.isGameOver = function() {
     // If the snake collides with itself, end the game
         const collide = this.noodle
-        // Filter out the head
             .filter((_, i) => i > 0)
-            // If head collides with any segment, collision
             .some(segment => segment.x === this.noodle[0].x && segment.y === this.noodle[0].y);
 
         return (
@@ -174,7 +173,7 @@ const Game = function(ui) {
     this.play = function() {
         if (!this.timer) {
             this.init();
-            this.timer = setInterval(tick.bind(this), SPEED)
+            this.timer = setInterval(tick.bind(this), CONSTANTS.SPEED)
         } else {
             console.log("We're already playing what's going on?");
         }

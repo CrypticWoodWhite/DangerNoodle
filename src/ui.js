@@ -1,5 +1,6 @@
 const blessed = require("blessed");
 
+// user interface constructor
 const UI = function() {
     this.blessed = blessed;
     this.screen = blessed.screen();
@@ -8,8 +9,8 @@ const UI = function() {
     this.gameContainer = this.blessed.box(this.gameBox);
     this.scoreContainer = this.blessed.box(this.scoreBox);
 
-    this.gameBox = function() {
-        return {
+    // next three are blessed box properties
+    this.gameBox = {
             parent: this.screen,
             top: 1,
             left: 0,
@@ -19,10 +20,8 @@ const UI = function() {
                 fg: "black",
                 bg: "black",
             }
-        }
     };
-    this.scoreBox = function() {
-        return {
+    this.scoreBox = {
             parent: this.screen,
             top: 0,
             left: "left",
@@ -33,10 +32,8 @@ const UI = function() {
                 fg: "white",
                 bg: "blue",
             }
-        }
     };
-    this.gameOverBox = function() {
-        return {
+    this.gameOverBox = {
             parent: this.screen,
             top: "center",
             left: "center",
@@ -54,9 +51,10 @@ const UI = function() {
                 border: {
                     fg: "white",
                 },
-            },
-        }
+            }
     };
+
+    // functions below
 
     this.draw = function(coord, color) {
         this.blessed.box({
