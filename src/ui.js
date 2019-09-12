@@ -6,52 +6,62 @@ const UI = function() {
     this.screen = blessed.screen();
     this.screen.title = "DangerNoodle.js";
 
-    this.gameContainer = this.blessed.box(this.gameBox);
+    this.gameContainer = this.blessed.box({
+        parent: this.screen,
+        top: 1,
+        left: 0,
+        width: "100%",
+        height: "100%-1",
+        style: {
+            fg: "black",
+            bg: "black",
+        }
+    });
     this.scoreContainer = this.blessed.box(this.scoreBox);
 
     // next three are blessed box properties
     this.gameBox = {
-            parent: this.screen,
-            top: 1,
-            left: 0,
-            width: "100%",
-            height: "100%-1",
-            style: {
-                fg: "black",
-                bg: "black",
-            }
+        parent: this.screen,
+        top: 1,
+        left: 0,
+        width: "100%",
+        height: "100%-1",
+        style: {
+            fg: "black",
+            bg: "black",
+        }
     };
     this.scoreBox = {
-            parent: this.screen,
-            top: 0,
-            left: "left",
-            width: "100%",
-            height: 1,
-            tags: true,
-            style: {
-                fg: "white",
-                bg: "blue",
-            }
+        parent: this.screen,
+        top: 0,
+        left: "left",
+        width: "100%",
+        height: 1,
+        tags: true,
+        style: {
+            fg: "white",
+            bg: "blue",
+        }
     };
     this.gameOverBox = {
-            parent: this.screen,
-            top: "center",
-            left: "center",
-            width: 20,
-            height: 6,
-            tags: true,
-            valign: "middle",
-            content: `{center}Game Over!\n\nPress enter to try again{/center}`,
+        parent: this.screen,
+        top: "center",
+        left: "center",
+        width: 20,
+        height: 6,
+        tags: true,
+        valign: "middle",
+        content: `{center}Game Over!\n\nPress enter to play again{/center}`,
+        border: {
+            type: "line",
+        },
+        style: {
+            fg: "black",
+            bg: "red",
             border: {
-                type: "line",
+                fg: "white",
             },
-            style: {
-                fg: "black",
-                bg: "red",
-                border: {
-                    fg: "white",
-                },
-            }
+        }
     };
 
     // functions below
@@ -80,7 +90,17 @@ const UI = function() {
     
     this.clearScreen = function() {
         this.gameContainer.detach();
-        this.gameContainer = this.blessed.box(this.gameBox);
+        this.gameContainer = this.blessed.box({
+            parent: this.screen,
+            top: 1,
+            left: 0,
+            width: "100%",
+            height: "100%-1",
+            style: {
+                fg: "black",
+                bg: "black",
+            }
+        });
     };
     
     this.resetScore = function() {

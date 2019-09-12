@@ -1,7 +1,7 @@
 // game constants
 const CONSTANTS = {
-    SPEED: 50,
-    DIRECTIONS: {
+    speed: 50,
+    directions: {
         up: {
             x: 0,
             y: -1
@@ -19,9 +19,9 @@ const CONSTANTS = {
             y: 0
         },
     },
-    INIT_NOODLE_SIZE: 5,
-    NOODLE_COLOR: "blue",
-    DOT_COLOR: "yellow"
+    init_noodle_size: 5,
+    noodle_color: "blue",
+    dot_color: "yellow"
 }
 
 // game constructor takes in user interface constructor
@@ -38,8 +38,8 @@ const Game = function(ui) {
     // initialize game
     this.init = function() {
         this.noodle = [];
-        for (let i = CONSTANTS.INIT_NOODLE_SIZE; i >= 0; i--) {
-            this.noodle[CONSTANTS.INIT_NOODLE_SIZE - i] = {
+        for (let i = CONSTANTS.init_noodle_size; i >= 0; i--) {
+            this.noodle[CONSTANTS.init_noodle_size - i] = {
                 x: i,
                 y: 0
             }
@@ -67,7 +67,7 @@ const Game = function(ui) {
         this.dot.y = this.randomPixel(1, this.ui.gameContainer.height - 1);
     
         // if the pixel is on a snake, regenerate the dot
-        noodle.forEach(segment => {
+        this.noodle.forEach(segment => {
             if (segment.x === this.dot.x && segment.y === this.dot.y) {
             randomDot();
             }
@@ -77,12 +77,12 @@ const Game = function(ui) {
     this.drawNoodle = function() {
         this.noodle.forEach(segment => {
             // draw method comes from UI module
-            this.ui.draw(segment, CONSTANTS.NOODLE_COLOR);
+            this.ui.draw(segment, CONSTANTS.noodle_color);
         });
     };
 
     this.drawDot = function() {
-        this.ui.draw(this.dot, CONSTANTS.DOT_COLOR);
+        this.ui.draw(this.dot, CONSTANTS.dot_color);
     };
 
     this.changeDirection = function(key) {
@@ -112,11 +112,11 @@ const Game = function(ui) {
         }
         // Move the head forward by one pixel based on velocity
         const head = {
-            x: this.noodle[0].x + CONSTANTS.DIRECTIONS[this.currentDirection].x,
-            y: this.noodle[0].y + CONSTANTS.DIRECTIONS[this.currentDirection].y,
+            x: this.noodle[0].x + CONSTANTS.directions[this.currentDirection].x,
+            y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y,
         }
     
-        this.snake.unshift(head);
+        this.noodle.unshift(head);
     
         // If the snake lands on a dot, increase the score and generate a new dot
         if (this.noodle[0].x === this.dot.x && this.noodle[0].y === this.dot.y) {
@@ -155,7 +155,7 @@ const Game = function(ui) {
     };
 
     this.tick = function() {
-        if (isGameOver()) {
+        if (this.isGameOver()) {
             this.showGameOverScreen();
             clearInterval(this.timer);
             this.timer = null;
@@ -173,7 +173,7 @@ const Game = function(ui) {
     this.play = function() {
         if (!this.timer) {
             this.init();
-            this.timer = setInterval(tick.bind(this), CONSTANTS.SPEED)
+            this.timer = setInterval(this.tick.bind(this), CONSTANTS.speed)
         } else {
             console.log("We're already playing what's going on?");
         }
