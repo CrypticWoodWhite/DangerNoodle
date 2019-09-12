@@ -93,7 +93,7 @@ const UI = function() {
     };
 
     this.updateScore = score => {
-        this.scoreContainer.setLine(0, `{bold}Score:{/bold} ${score}`);
+        this.scoreContainer.setLine(0, `{center}Score: ${score}{/center}`);
     };
     
     this.gameOverScreen = () => {
@@ -101,17 +101,17 @@ const UI = function() {
             parent: this.screen,
             top: "center",
             left: "center",
-            width: 20,
-            height: 6,
+            width: 50,
+            height: 7,
             tags: true,
             valign: "middle",
-            content: `{center}GAME OVER\n\nPress ENTER to play again{/center}`,
+            content: `{center}\nGAME OVER\n\nPress ENTER to play again{/center}`,
             border: {
                 type: "line",
             },
             style: {
                 fg: "black",
-                bg: "red",
+                bg: "yellow",
                 border: {
                     fg: "white",
                 },
@@ -155,8 +155,8 @@ const UI = function() {
         this.screen.render();
     };
 
-    this.bindHandlers = (keyPressHandler, playHandler, exitHandler) => {
-        this.screen.key(["up", "down", "left", "right"], keyPressHandler);
+    this.bindHandlers = (keypressHandler, playHandler, exitHandler) => {
+        this.screen.on("keypress", keypressHandler);
         this.screen.key(["enter"], playHandler);
         this.screen.key(["escape", "q", "C-c"], exitHandler);      
     };

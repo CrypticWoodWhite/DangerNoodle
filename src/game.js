@@ -32,7 +32,7 @@ const Game = function(ui) {
     this.dot = {};
     this.score = 0;
     this.currentDirection = "right";
-    this.changingDirection = false;
+    this.turning = false;
     this.timer = null;
 
     // initialize game
@@ -48,19 +48,20 @@ const Game = function(ui) {
         this.dot = {};
         this.score = 0;
         this.currentDirection = "right";
-        this.changingDirection = false;
+        this.turning = false;
         this.timer = null;
+
+        this.ui.bindHandlers(
+            this.turn.bind(this),
+            this.play.bind(this),
+            this.exit.bind(this)
+        );
 
         this.randomDot();
         // these two methods come from UI module
         this.ui.resetScore();
         this.ui.render();
 
-        this.ui.bindHandlers(
-            this.changeDirection,
-            this.play.bind(this),
-            this.exit.bind(this)
-        );
     };
     
     // Get a random coordinate from 0 to max container height/width
@@ -68,6 +69,7 @@ const Game = function(ui) {
         return Math.round(Math.random() * (max - min) + min);
     };
 
+    // use random pixel to give the dot coordinates
     this.randomDot = () => {
         this.dot.x = this.randomPixel(0, this.ui.gameContainer.width - 1);
         this.dot.y = this.randomPixel(1, this.ui.gameContainer.height - 1);
@@ -82,7 +84,6 @@ const Game = function(ui) {
 
     this.drawNoodle = () => {
         this.noodle.forEach(segment => {
-            // draw method comes from UI module
             this.ui.draw(segment, CONSTANTS.noodle_color);
         });
     };
@@ -91,29 +92,36 @@ const Game = function(ui) {
         this.ui.draw(this.dot, CONSTANTS.dot_color);
     };
 
-    this.changeDirection = (_, key) => {
+    this.turn = (_, key) => {
         console.log("CHANGE DIRECTION");
-        console.log(key);
-        console.log("=======================");
+        console.log("key:", key.name);
         // prevent 180deg direction change
-        if ((key.name === "ArrowUp") && this.currentDirection !== "down") {
+        if (key.name === "up" && this.currentDirection !== "down") {
+            console.log("up")
             this.currentDirection = "up";
-        } else if ((key.name === "ArrowDown") && this.currentDirection !== "up") {
+        } 
+        if (key.name === "down" && this.currentDirection !== "up") {
+            console.log("down")
             this.currentDirection = "down";
-        } else if ((key.name === "ArrowLeft") && this.currentDirection !== "right") {
+        }
+        if (key.name === "left" && this.currentDirection !== "right") {
+            console.log("left")
             this.currentDirection = "left";
-        } else if ((key.name === "ArrowRight") && this.currentDirection !== "left") {
+        }
+        if (key.name === "right" && this.currentDirection !== "left") {
+            console.log("right")
             this.currentDirection = "right";
         }
+
     };
 
     // move snake
     this.slither = () => {
-        if (this.changingDirection) {
+        if (this.turning) {
             return;
-        } else {
-            this.changingDirection = true;
         }
+        this.turning = true;
+        
         // Move the head forward by one pixel based on velocity
         const head = {
             x: this.noodle[0].x + CONSTANTS.directions[this.currentDirection].x,
@@ -158,21 +166,21 @@ const Game = function(ui) {
         this.ui.render();
     };
 
+    // timer - game "resets" itself based on game speed constant
     this.tick = () => {
         if (this.isGameOver()) {
             this.showGameOverScreen();
             clearInterval(this.timer);
             this.timer = null;
             return;
-        } else {    
-            this.changingDirection = false;
-            this.ui.clearScreen();
-            this.drawDot();
-            this.slither();
-            this.drawNoodle();
-            this.ui.render();
         }
-    }
+        this.changingDirection = false;
+        this.ui.clearScreen();
+        this.drawDot();
+        this.slither();
+        this.drawNoodle();
+        this.ui.render();
+    };
 
     this.play = (_, key) => {
         if (!this.timer) {
@@ -182,9 +190,6 @@ const Game = function(ui) {
     };
 
     this.exit = (_, key) => {
-        console.log("EXIT");
-        console.log(key);
-        console.log("============================");
         return process.exit(0);
     };
 
