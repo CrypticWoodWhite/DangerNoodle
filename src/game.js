@@ -56,9 +56,9 @@ const Game = function(ui) {
         this.ui.resetScore();
         this.ui.render();
     };
-
+    
+    // Get a random coordinate from 0 to max container height/width
     this.randomPixel = function(max, min) {
-        // Get a random coordinate from 0 to max container height/width
         return Math.round(Math.random() * (max - min) + min);
     };
 
@@ -161,7 +161,7 @@ const Game = function(ui) {
             this.timer = null;
             return;
         } else {    
-            changingDirection = false;
+            this.changingDirection = false;
             this.ui.clearScreen();
             this.drawDot();
             this.slither();
