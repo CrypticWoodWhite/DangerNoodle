@@ -1,6 +1,6 @@
 // game constants
 const CONSTANTS = {
-    speed: 100,
+    speed: 150,
     directions: {
         up: {
             x: 0,
@@ -84,10 +84,10 @@ const Game = function(ui) {
 
     this.growNoodle = () => {
         const eatDot = {
-            x: this.noodle[0].x + ONSTANTS.directions[this.currentDirection].x,
-            y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y
+            x: this.noodle[this.noodle.length-1].x - CONSTANTS.directions[this.currentDirection].x,
+            y: this.noodle[this.noodle.length-1].y - CONSTANTS.directions[this.currentDirection].y
         };
-        this.noodle.unshift(eatDot);
+        this.noodle.push(eatDot);
     };
 
     this.drawNoodle = () => {
