@@ -18,7 +18,7 @@ npm install dangernoodle
 
 ### Usage
 ```javascript
-var dangerNoodle = require(dangernoodle); // include in your own project
+var dangerNoodle = require("dangernoodle"); // include in your own project
 ```
 
 ```bash
