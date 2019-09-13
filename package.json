@@ -1,8 +1,8 @@
 {
   "name": "DangerNoodle",
   "version": "1.0.0",
-  "description": "Classic game of Snake in the command line",
-  "main": "dangernoodle.js",
+  "description": "Classic game of Snake in the command line written in JS",
+  "main": "DangerNoodle.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,6 +21,6 @@
     "blessed": "^0.1.81"
   },
   "bin": {
-    "dangernoodle": "./DangerNoodle.js"
+    "dangernoodle": "./lib/DangerNoodle.js"
   }
 }
