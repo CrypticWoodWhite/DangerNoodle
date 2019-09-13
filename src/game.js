@@ -1,6 +1,6 @@
 // game constants
 const CONSTANTS = {
-    speed: 500,
+    speed: 100,
     directions: {
         up: {
             x: 0,
@@ -34,8 +34,6 @@ const Game = function(ui) {
     this.currentDirection = "right";
     this.turning = false;
     this.timer = null;
-
-    this.noodleSize = CONSTANTS.init_noodle_size;
 
     // initialize game
     this.init = () => {
@@ -79,18 +77,20 @@ const Game = function(ui) {
         // if the pixel is on a snake, regenerate the dot
         this.noodle.forEach(segment => {
             if (segment.x === this.dot.x && segment.y === this.dot.y) {
-                randomDot();
+                this.randomDot();
             }
         });
     };
 
-    this.drawNoodle = () => {
-        for (let i = this.noodleSize; i >= 0; i--) {
-            this.noodle[this.noodleSize - i] = {
-                x: i,
-                y: 0
-            }
+    this.growNoodle = () => {
+        const eatDot = {
+            x: this.noodle[0].x + ONSTANTS.directions[this.currentDirection].x,
+            y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y
         };
+        this.noodle.unshift(eatDot);
+    };
+
+    this.drawNoodle = () => {
         this.noodle.forEach(segment => {
             this.ui.draw(segment, CONSTANTS.noodle_color);
         });
@@ -127,8 +127,8 @@ const Game = function(ui) {
         // move forward one pixel at a time by adding one pixel to head and removing last pixel
         const head = {
             x: this.noodle[0].x + CONSTANTS.directions[this.currentDirection].x,
-            y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y,
-        }
+            y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y
+        };
     
         this.noodle.unshift(head);
         this.noodle.pop();
@@ -136,7 +136,8 @@ const Game = function(ui) {
         // If the snake lands on a dot, increase the score, increase snake size by 2, and generate a new dot
         if (this.noodle[0].x === this.dot.x && this.noodle[0].y === this.dot.y) {
             this.score++;
-            this.noodleSize+=2;
+            this.growNoodle();
+            this.drawNoodle();
             this.ui.updateScore(this.score);
             this.randomDot();
         }
@@ -152,11 +153,11 @@ const Game = function(ui) {
         return (
             collide ||
             // Right wall
-            this.noodle[0].x >= this.ui.gameContainer.width - 1 ||
+            this.noodle[0].x >= this.ui.gameContainer.width ||
             // Left wall
             this.noodle[0].x <= -1 ||
             // Top wall
-            this.noodle[0].y >= this.ui.gameContainer.height - 1 ||
+            this.noodle[0].y >= this.ui.gameContainer.height ||
             // Bottom wall
             this.noodle[0].y <= -1
         )
