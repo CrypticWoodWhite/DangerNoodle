@@ -1,6 +1,6 @@
 // game constants
 const CONSTANTS = {
-    speed: 150,
+    speed: 100,
     directions: {
         up: {
             x: 0,
@@ -114,7 +114,6 @@ const Game = function(ui) {
         if (key.name === "right" && this.currentDirection !== "left") {
             this.currentDirection = "right";
         }
-
     };
 
     // move snake
@@ -133,7 +132,7 @@ const Game = function(ui) {
         this.noodle.unshift(head);
         this.noodle.pop();
     
-        // If the snake lands on a dot, increase the score, increase snake size by 2, and generate a new dot
+        // If the snake lands on a dot, increase the score, increase snake size, and generate a new dot
         if (this.noodle[0].x === this.dot.x && this.noodle[0].y === this.dot.y) {
             this.score++;
             this.growNoodle();
