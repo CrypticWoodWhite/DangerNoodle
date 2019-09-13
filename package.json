@@ -19,5 +19,8 @@
   "homepage": "https://github.com/CrypticWoodWhite/DangerNoodle#readme",
   "dependencies": {
     "blessed": "^0.1.81"
+  },
+  "bin": {
+    "dangernoodle": "./DangerNoodle.js"
   }
 }

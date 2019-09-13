@@ -93,7 +93,7 @@ const UI = function() {
     };
 
     this.updateScore = score => {
-        this.scoreContainer.setLine(0, `{center}Score: ${score}{/center}`);
+        this.scoreContainer.setLine(0, `{center}SCORE: ${score}{/center}`);
     };
     
     this.gameOverScreen = () => {
