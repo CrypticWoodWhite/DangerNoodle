@@ -1,6 +1,6 @@
 // game constants
 const CONSTANTS = {
-    speed: 100,
+    speed: 500,
     directions: {
         up: {
             x: 0,
@@ -17,7 +17,7 @@ const CONSTANTS = {
         left: {
             x: -1,
             y: 0
-        },
+        }
     },
     init_noodle_size: 5,
     noodle_color: "green",
@@ -34,6 +34,8 @@ const Game = function(ui) {
     this.currentDirection = "right";
     this.turning = false;
     this.timer = null;
+
+    this.noodleSize = CONSTANTS.init_noodle_size;
 
     // initialize game
     this.init = () => {
@@ -77,12 +79,18 @@ const Game = function(ui) {
         // if the pixel is on a snake, regenerate the dot
         this.noodle.forEach(segment => {
             if (segment.x === this.dot.x && segment.y === this.dot.y) {
-            randomDot();
+                randomDot();
             }
         });
     };
 
     this.drawNoodle = () => {
+        for (let i = this.noodleSize; i >= 0; i--) {
+            this.noodle[this.noodleSize - i] = {
+                x: i,
+                y: 0
+            }
+        };
         this.noodle.forEach(segment => {
             this.ui.draw(segment, CONSTANTS.noodle_color);
         });
@@ -93,23 +101,17 @@ const Game = function(ui) {
     };
 
     this.turn = (_, key) => {
-        // console.log("CHANGE DIRECTION");
-        // console.log("key:", key.name);
         // prevent 180deg direction change
         if (key.name === "up" && this.currentDirection !== "down") {
-            // console.log("up")
             this.currentDirection = "up";
         } 
         if (key.name === "down" && this.currentDirection !== "up") {
-            // console.log("down")
             this.currentDirection = "down";
         }
         if (key.name === "left" && this.currentDirection !== "right") {
-            // console.log("left")
             this.currentDirection = "left";
         }
         if (key.name === "right" && this.currentDirection !== "left") {
-            // console.log("right")
             this.currentDirection = "right";
         }
 
@@ -122,23 +124,22 @@ const Game = function(ui) {
         }
         this.turning = true;
         
-        // Move the head forward by one pixel based on velocity
+        // move forward one pixel at a time by adding one pixel to head and removing last pixel
         const head = {
             x: this.noodle[0].x + CONSTANTS.directions[this.currentDirection].x,
             y: this.noodle[0].y + CONSTANTS.directions[this.currentDirection].y,
         }
     
         this.noodle.unshift(head);
+        this.noodle.pop();
     
-        // If the snake lands on a dot, increase the score and generate a new dot
+        // If the snake lands on a dot, increase the score, increase snake size by 2, and generate a new dot
         if (this.noodle[0].x === this.dot.x && this.noodle[0].y === this.dot.y) {
             this.score++;
+            this.noodleSize+=2;
             this.ui.updateScore(this.score);
             this.randomDot();
-        } else {
-        // Otherwise, slither
-            this.noodle.pop();
-        };
+        }
     };
 
     // end game if runs into itself or edges of screen
@@ -177,23 +178,21 @@ const Game = function(ui) {
         this.turning = false;
         this.ui.clearScreen();
         this.drawDot();
-        this.slither();
         this.drawNoodle();
+        this.slither();
         this.ui.render();
     };
 
     this.play = (_, key) => {
         if (!this.timer) {
             this.init();
-            this.timer = setInterval(this.tick.bind(this), CONSTANTS.speed)
+            this.timer = setInterval(this.tick.bind(this), CONSTANTS.speed);
         }
     };
 
     this.exit = (_, key) => {
         return process.exit(0);
     };
-
-
 };
 
 module.exports = Game;
