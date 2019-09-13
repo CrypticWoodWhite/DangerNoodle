@@ -93,23 +93,23 @@ const Game = function(ui) {
     };
 
     this.turn = (_, key) => {
-        console.log("CHANGE DIRECTION");
-        console.log("key:", key.name);
+        // console.log("CHANGE DIRECTION");
+        // console.log("key:", key.name);
         // prevent 180deg direction change
         if (key.name === "up" && this.currentDirection !== "down") {
-            console.log("up")
+            // console.log("up")
             this.currentDirection = "up";
         } 
         if (key.name === "down" && this.currentDirection !== "up") {
-            console.log("down")
+            // console.log("down")
             this.currentDirection = "down";
         }
         if (key.name === "left" && this.currentDirection !== "right") {
-            console.log("left")
+            // console.log("left")
             this.currentDirection = "left";
         }
         if (key.name === "right" && this.currentDirection !== "left") {
-            console.log("right")
+            // console.log("right")
             this.currentDirection = "right";
         }
 
@@ -134,7 +134,7 @@ const Game = function(ui) {
         if (this.noodle[0].x === this.dot.x && this.noodle[0].y === this.dot.y) {
             this.score++;
             this.ui.updateScore(this.score);
-            this.generateDot();
+            this.randomDot();
         } else {
         // Otherwise, slither
             this.noodle.pop();
