@@ -1,6 +1,6 @@
 {
   "name": "dangernoodle",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Classic game of Snake for the command line written in JS",
   "main": "./lib/DangerNoodle.js",
   "scripts": {
