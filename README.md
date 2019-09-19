@@ -27,5 +27,11 @@ dangernoodle # run in bash terminal
 
 In the terminal, use the arrow keys to control the snake. Eating a dot makes the snake grow longer. Touching the wall or the snake's body ends the game. Press `Escape`, `q` or `Ctrl-C` anytime to exit the game.
 
+## Tools and Technologies
+- [NodeJS](https://nodejs.org/en/)
+- [ExpressJS](https://expressjs.com/)
+### Dependencies
+- [blessed](https://www.npmjs.com/package/blessed)
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
